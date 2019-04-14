@@ -38,13 +38,13 @@
                   <input type="text" class="form-control" id="friend-name">
                 </div>
                 <div class="form-group">
-                  <label for="reserve-phone">Avatar</label>
+                  <label for="reserve-phone">Image file URL</label>
                   <input type="text" class="form-control" id="friend-avatar">
                 </div>
                 <hr>
                 <div class="row">
                     <div class="col-12-lg">
-                      <h3> Directions: Rate your agreement with each of the following statements</h3>
+                      <h3> Directions: Rate how much you agree with each of the following statements</h3>
                       <hr>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                     <div class="col-12-lg">
                         <h3>Q1: I prefer crunchy over smooth</h3>
                         <select class="form-control" id="q1">
-                            <option selected disabled>Select a Value</option> 
+                            <option selected disabled value="0">Select a Value</option> 
                             <option value="1">1 (strongly disagree)</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -66,7 +66,7 @@
                     <div class="col-12-lg">
                         <h3>Q2: A dog is my best friend</h3>
                         <select class="form-control" id="q2">
-                            <option selected disabled>Select a Value</option> 
+                            <option selected disabled value="0">Select a Value</option> 
                             <option value="1">1 (strongly disagree)</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -80,7 +80,7 @@
                     <div class="col-12-lg">
                         <h3>Q3: Sportz! Sportz! Sportz!</h3>
                         <select class="form-control" id="q3">
-                            <option selected disabled>Select a Value</option> 
+                            <option selected disabled value="0">Select a Value</option> 
                             <option value="1">1 (strongly disagree)</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -94,7 +94,7 @@
                     <div class="col-12-lg">
                         <h3>Q4: Narwhals > Unicorns</h3>
                         <select class="form-control" id="q4">
-                            <option selected disabled>Select a Value</option> 
+                            <option selected disabled value="0">Select a Value</option> 
                             <option value="1">1 (strongly disagree)</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -108,7 +108,7 @@
                     <div class="col-12-lg">
                         <h3>Q5: Lets go Mets!</h3>
                         <select class="form-control" id="q5">
-                            <option selected disabled>Select a Value</option> 
+                            <option selected disabled value="0">Select a Value</option> 
                             <option value="1">1 (strongly disagree)</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -122,7 +122,7 @@
                     <div class="col-12-lg">
                         <h3>Q6: I'd rather be doing calculus</h3>
                         <select class="form-control" id="q6">
-                            <option selected disabled>Select a Value</option> 
+                            <option selected disabled value="0">Select a Value</option> 
                             <option value="1">1 (strongly disagree)</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -136,7 +136,7 @@
                     <div class="col-12-lg">
                         <h3>Q7: I like to play chess, not checkers</h3>
                         <select class="form-control" id="q7">
-                            <option selected disabled>Select a Value</option> 
+                            <option selected disabled value="0">Select a Value</option> 
                             <option value="1">1 (strongly disagree)</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -150,7 +150,7 @@
                     <div class="col-12-lg">
                         <h3>Q8: Swings > Slides</h3>
                         <select class="form-control" id="q8">
-                            <option selected disabled>Select a Value</option> 
+                            <option selected disabled value="0">Select a Value</option> 
                             <option value="1">1 (strongly disagree)</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -164,7 +164,7 @@
                     <div class="col-12-lg">
                         <h3>Q9: AOC!</h3>
                         <select class="form-control" id="q9">
-                            <option selected disabled>Select a Value</option> 
+                            <option selected disabled value="0">Select a Value</option> 
                             <option value="1">1 (strongly disagree)</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -178,7 +178,7 @@
                     <div class="col-12-lg">
                         <h3>Q10: I'm a picky eater</h3>
                         <select class="form-control" id="q10">
-                            <option selected disabled>Select a Value</option> 
+                            <option selected disabled value="0">Select a Value</option> 
                             <option value="1">1 (strongly disagree)</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -200,8 +200,30 @@
         <p><a href="/api/friends">API Friends Link</a>
       </div>
     </footer>
-
   </div>
+
+  <div class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Closest Friend Match:</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h2 id="bestFriendMatch"></h2>
+          </div>
+          <div>
+            <img id="bestFriendAvatar" class="img-fluid img-thumbnail mx-auto d-block" src="">
+          </div>
+          <div class="modal-footer">
+            <button id="modal-close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
 
 </body>
@@ -241,31 +263,36 @@
         console.log("data to be sent: " + data);
         // If a table is available... tell user they are booked.
         if (data) {
-          alert("Yay! You have been added to the friend list!");
-          alert(data.bestFriendName)
-          // Swal.fire({
-          //   title: "😞 Oh no! You've gone over. 😞",
-          //   text: "But I bet you've learned something.",
-          //   type: 'error',
-          //   confirmButtonText: 'Try Again',
-          //   allowOutsideClick: false,
-          // });
-          location.reload();
+          // alert("Yay! You have been added to the friend list!");
+
+          // alert(data.bestFriendName);
+
+          $('#bestFriendMatch').html(data.bestFriendName);
+		    	$("#bestFriendAvatar").attr("src", data.bestFriendAvatar);
+		    	// Pop open the modal dialog
+      			$('.modal').modal('show');
+          
+            $('myModal').on('hidden', function () {
+              location.reload();
+            })
+  
+          // location.reload();
 
         }
 
-        // If a table is available... tell user they on the waiting list.
-        else {
-          alert("Sorry you are on the wait list");
-        }
+        $("#friend-name").val("");
+        $("#friend-avatar").val("");
+        $("#q1").val("0");
+        $("#q2").val("0");
+        $("#q3").val("0");
+        $("#q4").val("0");
+        $("#q5").val("0");
+        $("#q6").val("0");
+        $("#q7").val("0");
+        $("#q8").val("0");
+        $("#q9").val("0");
+        $("#q10").val("0");
 
-        // Clear the form when submitting
-        // $("#friend-name").val("");
-        // $("#friend-avatar").val("");
-        // $("#q1").val("");
-        // $("#q2").val("");
-        // $("#q3").val("");
- 
        
       });
 
@@ -273,3 +300,4 @@
   });
 
 </script>
+
